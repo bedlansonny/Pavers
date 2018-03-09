@@ -48,12 +48,15 @@ public class Graph
             Edge shortest = null;
             for(Edge edge : edgesToCheck)
             {
-                if(!visited.contains(edge.b) && (shortest == null || edge.weight < shortest.weight))
+                if((!visited.contains(edge.a) || !visited.contains(edge.b)) && (shortest == null || edge.weight < shortest.weight))
                     shortest = edge;
             }
             if(shortest == null)
                 break;
-            current = shortest.b;
+            if(!visited.contains(shortest.a))
+                current = shortest.a;
+            else
+                current = shortest.b;
             totalEdgeWeight += shortest.weight;
         }
         return totalEdgeWeight;
