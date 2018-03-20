@@ -42,7 +42,8 @@ public class Graph
             visited.add(current);
             for(Edge edge : current.edges)
             {
-                edgesToCheck.add(edge);
+                if(!(visited.contains(edge.a) && visited.contains(edge.b)))
+                    edgesToCheck.add(edge);
             }
 
             Edge shortest = edgesToCheck.poll();
