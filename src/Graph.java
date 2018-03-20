@@ -30,7 +30,7 @@ public class Graph
     {
         int totalEdgeWeight = 0;
         HashSet<Node> visited = new HashSet<>();
-        HashSet<Edge> edgesToCheck = new HashSet<>();
+        PriorityQueue<Edge> edgesToCheck = new PriorityQueue<>();
 
         //pick any node, and add it to visited
         //add the single smallest-weight unvisited child of all nodes in visited to visited
@@ -45,12 +45,12 @@ public class Graph
                 edgesToCheck.add(edge);
             }
 
-            Edge shortest = null;
-            for(Edge edge : edgesToCheck)
+            Edge shortest = edgesToCheck.poll();
+            while(shortest != null && (visited.contains(shortest.a) && visited.contains(shortest.b)))
             {
-                if((!visited.contains(edge.a) || !visited.contains(edge.b)) && (shortest == null || edge.weight < shortest.weight))
-                    shortest = edge;
+                shortest = edgesToCheck.poll();
             }
+
             if(shortest == null)
                 break;
             if(!visited.contains(shortest.a))
@@ -72,7 +72,7 @@ public class Graph
         }
     }
 
-    static class Edge
+    static class Edge implements Comparable<Edge>
     {
         int weight;
         Node a, b;
@@ -81,6 +81,11 @@ public class Graph
             this.a = a;
             this.b = b;
             this.weight = weight;
+        }
+
+        public int compareTo(Edge otherEdge)
+        {
+            return this.weight - otherEdge.weight;
         }
     }
 }
